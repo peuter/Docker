@@ -7,21 +7,6 @@
 
 FROM debian:jessie as builder
 
-ENV BUILD_PACKAGES \
-  autoconf \
-  automake \
-  autotools-dev \
-  build-essential \
-  debhelper \
-  dh-systemd \
-  git-core \
-  libev-dev \
-  libsystemd-daemon-dev \
-  libsystemd-dev \
-  libtool \
-  libusb-1.0-0-dev \
-  pkg-config
-
 # debug
 ARG MY_ARG
 ARG MY_ARG2=default4MA2
@@ -41,6 +26,21 @@ RUN echo DOCKER_REPO: ${DOCKER_REPO}
 RUN echo CACHE_TAG: ${CACHE_TAG}
 RUN echo IMAGE_NAME: ${IMAGE_NAME}
 # debug
+
+ENV BUILD_PACKAGES \
+  autoconf \
+  automake \
+  autotools-dev \
+  build-essential \
+  debhelper \
+  dh-systemd \
+  git-core \
+  libev-dev \
+  libsystemd-daemon-dev \
+  libsystemd-dev \
+  libtool \
+  libusb-1.0-0-dev \
+  pkg-config
 
 RUN apt-get update && apt-get -y install $BUILD_PACKAGES
 
