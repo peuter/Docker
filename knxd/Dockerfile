@@ -34,6 +34,7 @@ ENV BUILD_PACKAGES \
   automake \
   autotools-dev \
   build-essential \
+  cmake \
   debhelper \
   dh-systemd \
   git-core \
