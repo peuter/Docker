@@ -11,4 +11,4 @@ echo BUILD_PATH=$BUILD_PATH
 ls -l $DOCKERFILE_PATH
 
 #docker build -f $DOCKERFILE_PATH --build-arg MY_ARG=$MY_ARG --build-arg SOURCE_BRANCH=$SOURCE_BRANCH --build-arg SOURCE_COMMIT=$SOURCE_COMMIT --build-arg COMMIT_MSG=$COMMIT_MSG --build-arg DOCKER_REPO=$DOCKER_REPO --build-arg IMAGE_NAME=$IMAGE_NAME -t $IMAGE_NAME .
-docker build -f $DOCKERFILE_PATH --build-arg BUILD_TAG=$(echo $IMAGE_NAME | sed 's/.*:\(v[0-9.]*\).*/\1/') -t $IMAGE_NAME .
+docker build -f $DOCKERFILE_PATH --build-arg BUILD_TAG=$(echo $IMAGE_NAME | sed 's/.*:\(v[0-9.]*\).*/\1/') -t $(echo $DOCKER_TAG | sed "s#,# -t $DOCKER_REPO:#g") .
