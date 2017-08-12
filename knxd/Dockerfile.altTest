@@ -1,4 +1,4 @@
-FROM debian:jessie as builder
+FROM debian:jessie
 
 # debug
 ARG MY_ARG
