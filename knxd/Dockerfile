@@ -7,24 +7,26 @@
 
 FROM debian:jessie as builder
 
+ARG BUILD_TAG
+RUN echo BUILD_TAG: ${BUILD_TAG}
 # debug
-ARG MY_ARG
-ARG MY_ARG2=default4MA2
-ARG SOURCE_BRANCH
-ARG SOURCE_COMMIT
-ARG COMMIT_MSG
-ARG DOCKER_REPO
-ARG CACHE_TAG
-ARG IMAGE_NAME
-RUN echo MY_ARG: ${MY_ARG}
-RUN echo MY_ARG2: ${MY_ARG2}
-RUN echo MY_ARG3: ${MY_ARG3:-def4ma3}
-RUN echo SOURCE_BRANCH: ${SOURCE_BRANCH}
-RUN echo SOURCE_COMMIT: ${SOURCE_COMMIT}
-RUN echo COMMIT_MSG: ${COMMIT_MSG}
-RUN echo DOCKER_REPO: ${DOCKER_REPO}
-RUN echo CACHE_TAG: ${CACHE_TAG}
-RUN echo IMAGE_NAME: ${IMAGE_NAME}
+#ARG MY_ARG
+#ARG MY_ARG2=default4MA2
+#ARG SOURCE_BRANCH
+#ARG SOURCE_COMMIT
+#ARG COMMIT_MSG
+#ARG DOCKER_REPO
+#ARG CACHE_TAG
+#ARG IMAGE_NAME
+#RUN echo MY_ARG: ${MY_ARG}
+#RUN echo MY_ARG2: ${MY_ARG2}
+#RUN echo MY_ARG3: ${MY_ARG3:-def4ma3}
+#RUN echo SOURCE_BRANCH: ${SOURCE_BRANCH}
+#RUN echo SOURCE_COMMIT: ${SOURCE_COMMIT}
+#RUN echo COMMIT_MSG: ${COMMIT_MSG}
+#RUN echo DOCKER_REPO: ${DOCKER_REPO}
+#RUN echo CACHE_TAG: ${CACHE_TAG}
+#RUN echo IMAGE_NAME: ${IMAGE_NAME}
 # debug
 
 ENV BUILD_PACKAGES \
@@ -46,8 +48,8 @@ RUN apt-get update && apt-get -y install $BUILD_PACKAGES
 
 # build knxd
 
-RUN git clone https://github.com/knxd/knxd.git && cd knxd && git checkout tags/v0.12.16 && \
-    dpkg-buildpackage -b -uc
+RUN git clone https://github.com/knxd/knxd.git && cd knxd && git checkout tags/${BUILD_TAG} \
+  && dpkg-buildpackage -b -uc
 
 # install in a fresh and thus clean environment
 
@@ -57,8 +59,8 @@ LABEL maintainer="Christian Mayer docker@cometvisu.org" \
   description="The knxd to access the KNX bus."
 
 COPY --from=builder /knxd_*.deb /knxd-tools_*.deb ./
-RUN apt-get update && apt-get -y install libev4 libusb-1.0-0 init-system-helpers
-RUN dpkg -i knxd_*.deb knxd-tools_*.deb
+RUN apt-get update && apt-get -y install libev4 libusb-1.0-0 init-system-helpers \
+  && dpkg -i knxd_*.deb knxd-tools_*.deb
 
 # needs fix for socket exposure on volume with root<->user first
 #RUN groupadd -r knxduser && useradd --no-log-init -r -g knxduser knxduser
