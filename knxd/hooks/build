@@ -12,7 +12,7 @@ set -o xtrace
 
 if [[ $IMAGE_NAME =~ ":v" ]]; then 
   echo "tag"; 
-  BUILD_BRANCH=tag/$(echo $IMAGE_NAME | sed 's/.*:\(v.*\).*/\1/')
+  BUILD_BRANCH=tags/$(echo $IMAGE_NAME | sed 's/.*:\(v.*\).*/\1/')
 else 
   echo "branch"; 
   BUILD_BRANCH=$(echo $IMAGE_NAME | sed 's/.*:\(.*\).*/\1/')
