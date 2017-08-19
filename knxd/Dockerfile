@@ -7,8 +7,8 @@
 
 FROM debian:jessie as builder
 
-ARG BUILD_TAG
-RUN echo BUILD_TAG: ${BUILD_TAG}
+ARG BUILD_BRANCH
+RUN echo BUILD_BRANCH: ${BUILD_BRANCH}
 # debug
 #ARG MY_ARG
 #ARG MY_ARG2=default4MA2
@@ -49,7 +49,7 @@ RUN apt-get update && apt-get -y install $BUILD_PACKAGES
 
 # build knxd
 
-RUN git clone https://github.com/knxd/knxd.git && cd knxd && git checkout tags/${BUILD_TAG} \
+RUN git clone https://github.com/knxd/knxd.git && cd knxd && git checkout ${BUILD_BRANCH} \
   && dpkg-buildpackage -b -uc
 
 # install in a fresh and thus clean environment
