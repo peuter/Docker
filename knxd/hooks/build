@@ -10,7 +10,7 @@ set -o xtrace
 #echo BUILD_PATH=$BUILD_PATH
 #ls -l $DOCKERFILE_PATH
 
-if [[ $TEST =~ ":v" ]]; then 
+if [[ $IMAGE_NAME =~ ":v" ]]; then 
   echo "tag"; 
   BUILD_BRANCH=tag/$(echo $IMAGE_NAME | sed 's/.*:\(v.*\).*/\1/')
 else 
