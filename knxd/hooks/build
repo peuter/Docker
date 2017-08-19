@@ -10,5 +10,15 @@ set -o xtrace
 #echo BUILD_PATH=$BUILD_PATH
 #ls -l $DOCKERFILE_PATH
 
+if [[ $TEST =~ ":v" ]]; then 
+  echo "tag"; 
+  BUILD_BRANCH=tag/$(echo $IMAGE_NAME | sed 's/.*:\(v.*\).*/\1/')
+else 
+  echo "branch"; 
+  BUILD_BRANCH=$(echo $IMAGE_NAME | sed 's/.*:\(.*\).*/\1/')
+fi
+
+echo BUILD_BRANCH=$BUILD_BRANCH
+
 #docker build -f $DOCKERFILE_PATH --build-arg MY_ARG=$MY_ARG --build-arg SOURCE_BRANCH=$SOURCE_BRANCH --build-arg SOURCE_COMMIT=$SOURCE_COMMIT --build-arg COMMIT_MSG=$COMMIT_MSG --build-arg DOCKER_REPO=$DOCKER_REPO --build-arg IMAGE_NAME=$IMAGE_NAME -t $IMAGE_NAME .
-docker build -f ${DOCKERFILE_PATH:-Dockerfile} --build-arg BUILD_TAG=$(echo $IMAGE_NAME | sed 's/.*:\(.*\).*/\1/') -t $(echo $DOCKER_REPO:$DOCKER_TAG | sed "s#,# -t $DOCKER_REPO:#g") .
+docker build -f ${DOCKERFILE_PATH:-Dockerfile} --build-arg BUILD_BRANCH=$BUILD_BRANCH -t $(echo $DOCKER_REPO:$DOCKER_TAG | sed "s#,# -t $DOCKER_REPO:#g") .
