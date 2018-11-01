@@ -101,8 +101,6 @@ RUN { \
 COPY cometvisu-entrypoint /usr/local/bin/cometvisu-entrypoint
 ENTRYPOINT ["cometvisu-entrypoint"]
 
-VOLUME /var/www/html/config
-
 ENV KNX_INTERFACE iptn:172.17.0.1:3700
 ENV KNX_PA 1.1.238
 ENV KNXD_PARAMETERS -u -d/var/log/eibd.log -c
