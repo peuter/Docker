@@ -20,7 +20,7 @@ Example configuration for an openHAB backend (running on host `192.168.0.10`):
 
 ```
 KNX_INTERFACE=
-CGI_URL_PATH=/rest/
+CGI_URL_PATH=/rest/cv/
 BACKEND_PROXY_SOURCE=/rest
 BACKEND_PROXY_TARGET=http://192.168.0.10:8080/rest
 ```
