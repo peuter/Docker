@@ -70,6 +70,11 @@ COPY --from=builder /usr/src/knxd-0.0.5.1/src/examples/busmonitor1 /usr/src/knxd
 COPY --from=builder /usr/src/knxd-0.0.5.1/src/examples/eibread-cgi /usr/lib/cgi-bin/r
 COPY --from=builder /usr/src/knxd-0.0.5.1/src/examples/eibwrite-cgi /usr/lib/cgi-bin/w
 
+RUN apt-get -qq update \
+ && apt-get install -y rrdtool \
+ && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+COPY rrdfetch /usr/lib/cgi-bin/rrdfetch
+
 ##################
 
 # Overwrite package default - allow index
@@ -95,6 +100,7 @@ RUN { \
     echo 'echo "{ \"v\":\"0.0.1\", \"s\":\"SESSION\" }"'; \
     } | tee "/usr/lib/cgi-bin/l" \
  && chmod +x /usr/lib/cgi-bin/l \
+ && chmod +x /usr/lib/cgi-bin/rrdfetch \
  && a2enmod cgi \
  && a2enmod headers
 
