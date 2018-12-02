@@ -91,7 +91,7 @@ RUN { \
     echo '</Directory>'; \
     } | tee "$APACHE_CONFDIR/conf-available/cv-docker-php.conf" \
  && a2disconf docker-php \
- && a2enconf cm-docker-php \
+ && a2enconf cv-docker-php \
  && { \
     echo "#!/bin/sh"; \
     echo "echo Content-Type: text/plain"; \
