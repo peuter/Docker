@@ -5,10 +5,14 @@ Abstract base docker container for the CometVisu
 [![](https://images.microbadger.com/badges/image/cometvisu/cometvisuabstractbase.svg)](https://microbadger.com/images/cometvisu/cometvisuabstractbase "Get your own image badge on microbadger.com")
 
 This container can be used as a base for own Docker containers that contain the
-[CometVisu](https://cometvisu.org/). It contains an Apache / PHP combo with the
+[CometVisu](https://www.cometvisu.org/). It contains an Apache / PHP combo with the
 knxd (0.0.5.1). Also RRD support for the diagram plugin is implemented.
 
-This container is available at DockerHub as [cometvisu/cometvisuabstractbase](https://hub.docker.com/r/cometvisu/cometvisuabstractbase/)
+This container is available at DockerHub as [cometvisu/cometvisuabstractbase](https://hub.docker.com/r/cometvisu/cometvisuabstractbase/).
+
+**NOTE:** This is just the abstract base for a CometVisu contianer. When you
+are looking for a ready to use container of the CometVisu you should look at
+[cometvisu/cometvisu](https://hub.docker.com/r/cometvisu/cometvisu/).
 
  Environment parameters:
 ------------------------

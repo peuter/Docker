@@ -46,7 +46,7 @@ ARG VERSION_TAG
 ARG SOURCE_COMMIT
 
 # Own labels
-LABEL maintainer="http://www.cometvisu.org/"
+LABEL maintainer="https://www.cometvisu.org/"
 LABEL org.cometvisu.pthsem.version="2.0.8"
 LABEL org.cometvisu.knxd.version="0.0.5.1"
 # Labels according to http://label-schema.org/rc1/
