@@ -38,20 +38,17 @@ RUN wget -O knxd_0.0.5.1.tar.gz "https://github.com/knxd/knxd/archive/0.0.5.1.ta
 # Run environment
 FROM php:7.2-apache
 
-ARG TRAVIS_JOB_NUMBER
-ARG TRAVIS_JOB_WEB_URL
-ARG TRAVIS_BUILD_WEB_URL
 ARG BUILD_DATE
 ARG VCS_REF
 ARG VERSION_TAG
+
+# set by the automated build at DockerHub
+ARG SOURCE_COMMIT
 
 # Own labels
 LABEL maintainer="http://www.cometvisu.org/"
 LABEL org.cometvisu.pthsem.version="2.0.8"
 LABEL org.cometvisu.knxd.version="0.0.5.1"
-LABEL org.cometvisu.travis-job-number=$TRAVIS_JOB_NUMBER
-LABEL org.cometvisu.travis-job-web-url=$TRAVIS_JOB_WEB_URL
-LABEL org.cometvisu.travis-build-web-url=$TRAVIS_BUILD_WEB_URL
 # Labels according to http://label-schema.org/rc1/
 LABEL org.label-schema.schema-version="1.0"
 LABEL org.label-schema.build-date=$BUILD_DATE
@@ -62,7 +59,9 @@ LABEL org.label-schema.url="https://www.cometvisu.org"
 LABEL org.label-schema.vcs-url="https://github.com/CometVisu/CometVisu"
 LABEL org.label-schema.vcs-ref=$VCS_REF
 LABEL org.label-schema.vendor="The CometVisu project"
-LABEL org.label-schema.version=$VERSION_TAG
+#LABEL org.label-schema.version=$VERSION_TAG
+LABEL org.cometvisu.VERSION_TAG=$VERSION_TAG
+LABEL org.cometvisu.SOURCE_COMMIT=$SOURCE_COMMIT
 
 COPY --from=builder /usr/local/bin/knxd /usr/bin/knxd
 COPY --from=builder /usr/local/lib/libpthsem.so.20 /usr/lib/
