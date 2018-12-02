@@ -1,7 +1,4 @@
 #!/bin/bash
-echo Content-Type: application/json
-echo Content-Encoding: gzip
-echo
 
 RRD=`echo "$QUERY_STRING" | sed -n 's/^.*rrd=\([^&]*\).*$/\1/p' | sed "s/%20/ /g"`
 DS=`echo "$QUERY_STRING" | sed -n 's/^.*ds=\([^&]*\).*$/\1/p' | sed "s/%20/ /g"`
@@ -9,11 +6,28 @@ START=`echo "$QUERY_STRING" | sed -n 's/^.*start=\([^&]*\).*$/\1/p' | sed "s/%20
 END=`echo "$QUERY_STRING" | sed -n 's/^.*end=\([^&]*\).*$/\1/p' | sed "s/%20/ /g"`
 RES=`echo "$QUERY_STRING" | sed -n 's/^.*res=\([^&]*\).*$/\1/p' | sed "s/%20/ /g"`
 
-rrdtool fetch /var/www/rrd/$RRD $DS -s$START -e$END -r$RES | \
+if [ ! -f /var/www/rrd/$RRD ]; then
+  # send 400 instead of 404 to differentiate easily between a bad server
+  # setup that doesn't find this script from the file not found
+  echo "Status: 400 Bad Request"
+  echo
+  echo "RRD not found at '/var/www/rrd/$RRD'!"
+  exit
+fi
+
+rrdtool fetch /var/www/rrd/$RRD $DS -s$START -e$END -r$RES 2>&1 | \
 { while read line ;
 do
-    if [[ "$line" == *:* ]]          # matching lines with ":"
-    then
+  if [[ "$line" == "ERROR: This RRD was created on another architecture" ]]
+  then
+    echo "Status: 409 Conflict"
+    echo
+    echo "ERROR: This RRD was created on another architecture"
+    exit
+  fi
+
+  if [[ "$line" == *:* ]]            # matching lines with ":"
+  then
     arr=(${line//: / })              # splits string with ": " in array
     timestamp="${arr[0]}000"         # first is the time stamp
     content=${arr[@]:1}              # all but the first
@@ -21,5 +35,8 @@ do
     data+="[$timestamp,[\"$content_text\"]],"
 fi
 done
+echo Content-Type: application/json
+echo Content-Encoding: gzip
+echo
 echo "[${data%?}]" | gzip -c         # cuts last char of $data and makes [] around
 }
