@@ -71,7 +71,7 @@ COPY --from=builder /usr/src/knxd-0.0.5.1/src/examples/eibread-cgi /usr/lib/cgi-
 COPY --from=builder /usr/src/knxd-0.0.5.1/src/examples/eibwrite-cgi /usr/lib/cgi-bin/w
 
 RUN apt-get -qq update \
- && apt-get install -y rrdtool \
+ && apt-get install -y --no-install-recommends rrdtool \
  && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 COPY rrdfetch /usr/lib/cgi-bin/rrdfetch
 
@@ -90,7 +90,7 @@ RUN { \
     echo '\tOptions +Indexes'; \
     echo '\tAllowOverride All'; \
     echo '</Directory>'; \
-    } | tee "$APACHE_CONFDIR/conf-available/cm-docker-php.conf" \
+    } | tee "$APACHE_CONFDIR/conf-available/cv-docker-php.conf" \
  && a2disconf docker-php \
  && a2enconf cm-docker-php \
  && { \

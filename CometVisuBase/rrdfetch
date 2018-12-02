@@ -1,34 +1,25 @@
 #!/bin/bash
-#echo Content-Type: text/plain
 echo Content-Type: application/json
 echo Content-Encoding: gzip
 echo
-#rrdtool fetch /var/www/html/rrd/Luftfeuchte_Bad_knx5-2-79.rrd AVERAGE -s-24h
+
 RRD=`echo "$QUERY_STRING" | sed -n 's/^.*rrd=\([^&]*\).*$/\1/p' | sed "s/%20/ /g"`
 DS=`echo "$QUERY_STRING" | sed -n 's/^.*ds=\([^&]*\).*$/\1/p' | sed "s/%20/ /g"`
 START=`echo "$QUERY_STRING" | sed -n 's/^.*start=\([^&]*\).*$/\1/p' | sed "s/%20/ /g"`
 END=`echo "$QUERY_STRING" | sed -n 's/^.*end=\([^&]*\).*$/\1/p' | sed "s/%20/ /g"`
 RES=`echo "$QUERY_STRING" | sed -n 's/^.*res=\([^&]*\).*$/\1/p' | sed "s/%20/ /g"`
-rrdtool fetch /var/www/html/rrd/$RRD $DS -s$START -e$END -r$RES | \
+
+rrdtool fetch /var/www/rrd/$RRD $DS -s$START -e$END -r$RES | \
 { while read line ;
 do
-    if   "$line" == *:*   #matching lines with ":"
+    if [[ "$line" == *:* ]]          # matching lines with ":"
     then
-    arr=(${line//: / }) #splits string with ": " in array
-    a=${arr[0]}
-    b=${arr[1]}
-    c=${arr[2]}
-    d=${arr[3]}
-    e=${arr[4]}
-    f=${arr[5]}
-    g=${arr[6]}
-    h=${arr[7]}
-    i=${arr[8]}
-    j=${arr[9]}
-    k=${arr[10]}
-    a+="000"   #add zeros
-    data+="[$a,[\"$b\",\"$c\",\"$d\",\"$e\",\"$f\",\"$g\",\"$h\",\"$i\",\"$j\",\"$k\"]],"
+    arr=(${line//: / })              # splits string with ": " in array
+    timestamp="${arr[0]}000"         # first is the time stamp
+    content=${arr[@]:1}              # all but the first
+    content_text=${content// /\",\"} # join with "," in between
+    data+="[$timestamp,[\"$content_text\"]],"
 fi
 done
-echo "[${data%?}]" | gzip -c #cuts last character of $data and makes [] around
+echo "[${data%?}]" | gzip -c         # cuts last char of $data and makes [] around
 }
