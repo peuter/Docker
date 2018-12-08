@@ -51,7 +51,7 @@ LABEL org.cometvisu.cometvisubase.version="$BUILD_DATE-$VCS_REF"
 LABEL org.label-schema.schema-version="1.0"
 LABEL org.label-schema.build-date=$BUILD_DATE
 LABEL org.label-schema.name="CometVisu"
-LABEL org.label-schema.description="The CometVisu visualistion abstract base"
+LABEL org.label-schema.description="The CometVisu visualization abstract base"
 LABEL org.label-schema.usage="README.md"
 LABEL org.label-schema.url="https://www.cometvisu.org"
 LABEL org.label-schema.vcs-url="https://github.com/CometVisu/Docker"
@@ -88,6 +88,11 @@ RUN { \
     } | tee "$APACHE_CONFDIR/conf-available/cv-docker-php.conf" \
  && a2disconf docker-php \
  && a2enconf cv-docker-php \
+ && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
+ && { \
+    echo 'upload_max_filesize = 40M'; \
+    echo 'post_max_size = 40M'; \
+    } | tee "$PHP_INI_DIR/conf.d/cv-php.ini" \
  && { \
     echo "#!/bin/sh"; \
     echo "echo Content-Type: text/plain"; \

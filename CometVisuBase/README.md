@@ -9,8 +9,8 @@ This container is available at DockerHub as [cometvisu/cometvisuabstractbase](ht
 
 **NOTE:** This is just the abstract base for a CometVisu contianer. When you are looking for a ready to use container of the CometVisu you should look at [cometvisu/cometvisu](https://hub.docker.com/r/cometvisu/cometvisu/).
 
- Environment parameters:
-------------------------
+Environment parameters:
+-----------------------
 
 |Parameter              |Default                  |Description|
 |-----------------------|-------------------------|-----------|
