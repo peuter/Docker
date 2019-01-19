@@ -2,8 +2,10 @@ Param(
 
     [bool]$noDockerBuild = $False,
     [bool]$pushDockerFile = $False,
-    [string]$IMAGE_TAG = "dev"
+    [string]$IMAGE_TAG = "dev",
+    [string]$dockerFileLocation = "../"
 )
+
 # creates dockerfile for multiple plattforms as needed.
 # pass "-noDockerBuild 1" as first argument to only generate dockerfiles without building them
 
@@ -15,6 +17,8 @@ $qemuArchMap = @{amd64="amd"; arm32v7="arm"}
 
 ############################################################################
 # Normally you should nothing change below this line
+
+Push-Location $dockerFileLocation
 
 Write-Output "Start generation of docker files for archs $targetArch"
 
@@ -63,3 +67,4 @@ foreach ($baseArchDocker in $targetArch)
     }
 }
 
+Pop-Location
