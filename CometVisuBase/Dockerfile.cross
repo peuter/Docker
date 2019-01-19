@@ -69,6 +69,8 @@ COPY --from=builder /usr/src/knxd-0.0.5.1/src/examples/eibwrite-cgi /usr/lib/cgi
 
 RUN apt-get -qq update \
  && apt-get install -y --no-install-recommends rrdtool \
+ && apt-get install -y --no-install-recommends libxml2-dev \
+ && docker-php-ext-install soap \
  && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 COPY rrdfetch /usr/lib/cgi-bin/rrdfetch
 
