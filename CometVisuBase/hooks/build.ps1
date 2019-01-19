@@ -20,31 +20,39 @@ $qemuArchMap = @{amd64="amd"; arm32v7="arm"}
 
 Push-Location $dockerFileLocation
 
+$PSDefaultParameterValues['*:Encoding'] = 'utf8' # fix encoding issues when using wrong charset causing docker to read trash
+
 Write-Output "Start generation of docker files for archs $targetArch"
 
 foreach($baseArchDocker in $targetArch)
 {
-        copy Dockerfile.cross Dockerfile.$baseArchDocker
+        $filePath = Resolve-Path -Path "Dockerfile.$baseArchDocker"
 
-        (Get-Content Dockerfile.$baseArchDocker) -replace "__BASEIMAGE_ARCH__", "$baseArchDocker" | Out-File Dockerfile.$baseArchDocker
-        
-        (Get-Content Dockerfile.$baseArchDocker) -replace "__QEMU_ARCH__", $qemuArchMap[$baseArchDocker] | Out-File Dockerfile.$baseArchDocker
+        copy Dockerfile.cross $filePath
+
+        (Get-Content $filePath) -replace "__BASEIMAGE_ARCH__", "$baseArchDocker" | Out-File $filePath
+        (Get-Content $filePath) -replace "__QEMU_ARCH__", $qemuArchMap[$baseArchDocker] | Out-File $filePath
 
         if ($baseArchDocker.Equals('amd64') )
         {
-                (Get-Content Dockerfile.$baseArchDocker)| select-string -pattern '__CROSS_' -notmatch | Out-File Dockerfile.$baseArchDocker
-                (Get-Content Dockerfile.$baseArchDocker) -replace "amd64/","" | Out-File Dockerfile.$baseArchDocker
+                (Get-Content $filePath)| Where-Object {$_ -notmatch "__CROSS_"} | Out-File $filePath
+                (Get-Content $filePath) -replace "amd64/","" | Out-File $filePath
         } else
         {
-                (Get-Content Dockerfile.$baseArchDocker) -replace "__CROSS_","" | Out-File Dockerfile.$baseArchDocker
+                (Get-Content $filePath) -replace "__CROSS_","" | Out-File $filePath
         } 
+
+        # fix line-endings to use unix style
+        $content = [IO.File]::ReadAllText($filePath) -replace "`r`n","`n"
+        [IO.File]::WriteAllText($filePath, $content)
 
 }
 
 
 if ( $noDockerBuild ) 
 {
-	Write-Output "--noDockerBuild was specified, skipping container generation"
+	Write-Output "-noDockerBuild 1 was specified, skipping container generation"
+    Pop-Location
 	exit 0
 }
 
