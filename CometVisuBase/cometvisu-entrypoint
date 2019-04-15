@@ -22,10 +22,11 @@ fi
 
 if [ "${BACKEND_PROXY_SOURCE}" != "" ] && [ "${BACKEND_PROXY_TARGET}" != "" ]; then
     echo "proxying ${BACKEND_PROXY_SOURCE} -> ${BACKEND_PROXY_TARGET}"
-    echo "ProxyPass ${BACKEND_PROXY_SOURCE} ${BACKEND_PROXY_TARGET}"        >> $APACHE_CONFDIR/conf-available/cm-docker-php.conf
-    echo "ProxyPassReverse ${BACKEND_PROXY_TARGET} ${BACKEND_PROXY_SOURCE}" >> $APACHE_CONFDIR/conf-available/cm-docker-php.conf
+    echo "ProxyPass ${BACKEND_PROXY_SOURCE} ${BACKEND_PROXY_TARGET}"        >  $APACHE_CONFDIR/conf-available/cv-proxy.conf
+    echo "ProxyPassReverse ${BACKEND_PROXY_TARGET} ${BACKEND_PROXY_SOURCE}" >> $APACHE_CONFDIR/conf-available/cv-proxy.conf
 
     a2enmod proxy_http > /dev/null
+    a2enconf cv-proxy.conf > /dev/null
 fi
 
 # first arg is `-f` or `--some-option`
