@@ -45,10 +45,10 @@ do
 	printf "\n\n\n###########################################################\n"
 	printf "Start docker build for $baseArchDocker\n\n\n"
 	
-	if [ $baseArchDocker == "arm32v7" ]
-	then
+	#if [ $baseArchDocker == "arm32v7" ]
+	#then
 		#docker run --rm --privileged multiarch/qemu-user-static:register
-	fi
+	#fi
 	
 	# $IMAGE_TAG var is injected into the build so the tag is correct.
 
