@@ -1,5 +1,5 @@
 language: generic
-
+sudo: required
 services:
     - docker
     
@@ -8,4 +8,4 @@ script: ls ./
 #    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin   
 deploy:
   provider: script
-  script: cd ./CometVisuBase && ./hooks/build --noPush
+  script: cd ./CometVisuBase && sudo ./hooks/build --noPush
