@@ -51,6 +51,12 @@ do
 	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 	  -t cometvisu/cometvisuabstractbase:$baseArchDocker-$IMAGE_TAG -f Dockerfile.$baseArchDocker .
  
+	if [ $1 == "--noPush" ]
+	then
+		echo "--noPush was specified, skipping pushing container"
+		continue
+	fi
+
 	 docker push cometvisu/cometvisuabstractbase:$baseArchDocker-$IMAGE_TAG
 
 done
