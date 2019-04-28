@@ -47,7 +47,7 @@ do
 	
 	if [ $baseArchDocker == "arm32v7" ]
 	then
-		docker run --rm --privileged multiarch/qemu-user-static:register
+		#docker run --rm --privileged multiarch/qemu-user-static:register
 	fi
 	
 	# $IMAGE_TAG var is injected into the build so the tag is correct.

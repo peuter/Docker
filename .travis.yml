@@ -4,7 +4,8 @@ services:
     - docker
     
 script: ls ./
-#before_deploy:
+before_deploy:
+    - docker run --rm --privileged multiarch/qemu-user-static:register
 #    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin   
 deploy:
   provider: script
