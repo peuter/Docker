@@ -1,5 +1,7 @@
 services:
     - docker
+    
+script: ls ./
 #before_deploy:
 #    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin   
 deploy:
