@@ -1,1 +1,1 @@
-script: bash CometVisuBase/hooks/build --noPush
+script: bash cd CometVisuBase && hooks/build --noPush
