@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e # exit in case of any error
 
 # creates dockerfile for multiple plattforms as needed.
 # pass --noDockerBuild as first argument to only generate dockerfiles without building them
