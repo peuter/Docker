@@ -10,6 +10,5 @@ before_deploy:
 deploy:
   provider: script
   script: 
-    - if [ ! "$TRAVIS_PULL_REQUEST" = "false" ]; then cd ./CometVisuBase && sudo ./hooks/build --noPush; fi
-    - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then cd ./CometVisuBase && sudo ./hooks/build --noDockerBuild; fi
+    - if [ ! "$TRAVIS_PULL_REQUEST" = "false" ]; then cd ./CometVisuBase && sudo ./hooks/build --noPush; else cd ./CometVisuBase && sudo ./hooks/build --noDockerBuild; fi
   skip_cleanup: true
