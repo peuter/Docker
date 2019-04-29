@@ -2,6 +2,10 @@
 
 # creates dockerfile for multiple plattforms as needed.
 # pass --noDockerBuild as first argument to only generate dockerfiles without building them
+# pass --noPush as first argument to only build the container and do not push them
+
+# the resulting container will be named "cometvisu/cometvisuabstractbase:amd64-latest" and "cometvisu/cometvisuabstractbase:arm32v7-latest"
+# if the build is triggered in the "develop" branch (instead "master"), the container will be named "testing" instead "latest"
 
 # enter desired plattforms here (following the docker notation, e.g. arm32v7
 targetArch=(amd64 arm32v7)
