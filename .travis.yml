@@ -6,10 +6,10 @@ script:
     - ls ./
 before_deploy:
     - docker run --rm --privileged multiarch/qemu-user-static:register
-#    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin   
+#   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin   
 deploy:
   provider: script
   script: 
-    - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then cd ./CometVisuBase && sudo ./hooks/build --noPush; fi'
-    - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then cd ./CometVisuBase && sudo ./hooks/build --noDockerBuild --noPush; fi'
+    - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then cd ./CometVisuBase && sudo ./hooks/build --noPush; fi
+    - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then cd ./CometVisuBase && sudo ./hooks/build --noDockerBuild --noPush; fi
   skip_cleanup: true
