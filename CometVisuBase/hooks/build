@@ -12,7 +12,13 @@ declare -A qemuArchMap=([amd64]=amd [arm32v7]=arm)
 ############################################################################
 # Normally you should nothing change below this line
 
-echo "Start generation of docker files for archs ${targetArch[@]}"
+if [[ "$TRAVIS_BRANCH" = "master" ]]; then
+    imageTag=latest
+elif [[ "$TRAVIS_BRANCH" = "develop" ]]; then
+    imageTag=testing
+fi
+
+echo "Start generation of docker files for archs ${targetArch[@]} with tag $imageTag"
 
 for baseArchDocker in ${targetArch[@]}
 do
@@ -43,18 +49,13 @@ fi
 for baseArchDocker in ${targetArch[@]}
 do
 	printf "\n\n\n###########################################################\n"
-	printf "Start docker build for $baseArchDocker\n\n\n"
-	
-	#if [ $baseArchDocker == "arm32v7" ]
-	#then
-		#docker run --rm --privileged multiarch/qemu-user-static:register
-	#fi
+	printf "Start docker build for $baseArchDocker-$imageTag\n\n\n"
 	
 	# $IMAGE_TAG var is injected into the build so the tag is correct.
 
 	docker build --build-arg VCS_REF=`git rev-parse --short HEAD` \
 	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-	  -t cometvisu/cometvisuabstractbase:$baseArchDocker-$IMAGE_TAG -f Dockerfile.$baseArchDocker .
+	  -t cometvisu/cometvisuabstractbase:$baseArchDocker-$imageTag -f Dockerfile.$baseArchDocker .
  
 	if [ $1 == "--noPush" ]
 	then
@@ -62,7 +63,7 @@ do
 		continue
 	fi
 
-	 docker push cometvisu/cometvisuabstractbase:$baseArchDocker-$IMAGE_TAG
+	 docker push cometvisu/cometvisuabstractbase:$baseArchDocker-$imageTag
 
 done
 
