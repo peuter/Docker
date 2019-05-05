@@ -2,9 +2,15 @@ language: generic
 sudo: required
 services:
     - docker
+
+env:
+  global:
+    - secure: "H+sd3XOedrSK0wgko1Nop1OEyafbKnSNeZCis7RYTs0x8hHOeCOE3V20277uwt/QrpOYqa7LrLPl+lh7woWNRIakm7uAHQ6RmSmst2r5MTYseu89m0eraoIdyFDdC4vNZAccj0MFVafOvYqT8h7N53DcsmMQ0QzxZJxOn/eBVYAA1/kDjoBCWpVD7fe/j1J2oPsjNQxcwkJbnjx1HXw53KUHSecqaQcccQb6xdXnMcAN/ZXKy9aCW5I+AC5ODKGtBYs2OfjRcTqXvWWS4MGbFRVOIFGXIz3143U8a+tpoYN3uggZu+P9y1FXTJIqXFNj8GaEvSBdaGsq/7ASWRxJ5hknEUjH8qW1HdrplnQ7yucC2+KR10NUJndQzawS5s+SprsIk2g3EvZPpiJwT0/HldTfizMDBdb/0GxHD9KH11vBetcHjghub389vUdL1uTFPdcsAO/nh7bSchvm9vNADRgDgUQdGCgvGddzPjGUBamATKfJUd1VWPUXe+T6AfHJd1hbsSubJ/ZNGPkMI+BPPAtuLV9xEjE84T/J2cKTqeuf1VQujSUpA34cyphyp2uD1iX9lQVK7dwdpErXyZTbmSudOyaTJSVN0YVvgQFL1mV/oG7hI7+hKfWDleK29lUj3zBn46ovWRctyV+CeFmRddzHoD8q1Cg3B3gJ6BHzEI8=" # DOCKER_USERNAME
+
 script: 
     - ls ./
 before_deploy:
+    - echo  "$DOCKER_USERNAME"
     - docker run --rm --privileged multiarch/qemu-user-static:register
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin   
 deploy:
