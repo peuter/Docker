@@ -68,7 +68,13 @@ do
 		continue
 	fi
 
-	 docker push cometvisu/cometvisuabstractbase:$baseArchDocker-$imageTag
+	if [ $baseArchDocker == "amd64" ]
+	then
+	        docker tag cometvisu/cometvisuabstractbase:$baseArchDocker-$imageTag cometvisu/cometvisuabstractbase:$imageTag
+  	        docker push cometvisu/cometvisuabstractbase:$imageTag
+  	fi
+
+        docker push cometvisu/cometvisuabstractbase:$baseArchDocker-$imageTag
 
 done
 
