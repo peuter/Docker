@@ -6,6 +6,7 @@ script:
     - ls ./
 before_deploy:
     - docker run --rm --privileged multiarch/qemu-user-static:register
+    - echo "$DOCKER_USERNAME" | sed 's/\(.\)/ \1/g'
     - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin   
 deploy:
   provider: script
