@@ -6,7 +6,7 @@ chmod a+x /usr/local/bin/healthcheck
 
 if [ "${STOP_ON_BAD_HEALTH}" = "true" ]
     then echo "badhealth='apachectl stop'" >> /usr/local/bin/healthcheck
-    then echo "badhealth='true'" >> /usr/local/bin/healthcheck
+    else echo "badhealth='true'" >> /usr/local/bin/healthcheck
 fi
 
 if [ "${KNX_INTERFACE}" != "" ]; then
