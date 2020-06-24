@@ -122,7 +122,5 @@ ENV CGI_URL_PATH /cgi-bin/
 ENV BACKEND_PROXY_SOURCE ""
 ENV BACKEND_PROXY_TARGET ""
 
-# TODO:
-# HEALTHCHECK
-
+HEALTHCHECK CMD ["healthcheck"]
 CMD ["apache2-foreground"]

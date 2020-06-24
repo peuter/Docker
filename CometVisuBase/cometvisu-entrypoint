@@ -1,10 +1,13 @@
 #!/bin/sh
 set -e
 
+HEALTH_CMD="curl -f -s http://localhost/ >/dev/null || (echo: 'Error: apache not responding'; exit 1)"
+
 if [ "${KNX_INTERFACE}" != "" ]; then
     echo "starting knxd"
     knxd -i $KNX_INTERFACE -e $KNX_PA $KNXD_PARAMETERS
     chmod a+w /tmp/eib
+    HEALTH_CMD="pidof knxd >/dev/null || (echo 'Error: knxd not running'; exit 1) && $HEALTH_CMD"
 fi
 
 CGI_URL_PATH=${CGI_URL_PATH:-/cgi-bin/}
@@ -39,5 +42,9 @@ fi
 if [ "${1#-}" != "$1" ]; then
     set -- apache2-foreground "$@"
 fi
+
+echo "#!/bin/sh" >  /usr/local/bin/healthcheck
+echo $HEALTH_CMD >> /usr/local/bin/healthcheck
+chmod a+x /usr/local/bin/healthcheck
 
 exec "$@"
