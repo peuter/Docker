@@ -38,3 +38,10 @@ The CometVisu should be installed to the directory `/var/www/html`. This would t
 
 The RRD files, when that feature is desired to be used, must be located in the directory `/var/www/rrd/`. So this would also be a volume as the RRD files must be created and filled up from an external source to this container.  
 **NOTE:** the RRD files must be compatible in architecture as they can't be used otherwise.
+
+FAQ:
+----
+
+* **Question:** Why does the log show a message like `apache2: Could not reliably determine the server's fully qualified domain name, using 172.17.0.2. Set the 'ServerName' directive globally to suppress this message`?  
+  **Answer:** The Docker container was started without setting the parameter `--hostname` (or, in short, `-h`).  
+  Using Portainer this would be done at "Network" on the field "Domain Name".
