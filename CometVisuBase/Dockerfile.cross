@@ -122,5 +122,7 @@ ENV CGI_URL_PATH /cgi-bin/
 ENV BACKEND_PROXY_SOURCE ""
 ENV BACKEND_PROXY_TARGET ""
 
-HEALTHCHECK CMD ["healthcheck"]
+ENV STOP_ON_BAD_HEALTH false
+
+HEALTHCHECK --interval=120s --timeout=10s CMD ["healthcheck"]
 CMD ["apache2-foreground"]

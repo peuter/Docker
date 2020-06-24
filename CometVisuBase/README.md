@@ -14,6 +14,7 @@ Environment parameters:
 
 |Parameter              |Default                  |Description|
 |-----------------------|-------------------------|-----------|
+|STOP_ON_BAD_HEALTH     |false                    |Stop container on failed health check when set to `true`. This will triggerd a new start of the container when docker is configured to do so|
 |ACCESS_LOG             |false                    |Show web server access log when set to `true`|
 |KNX_INTERFACE          |iptn:172.17.0.1:3700     |Setting this to empty string, will prevent the knxd from beeing started|
 |KNX_PA                 |1.1.238                  ||

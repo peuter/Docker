@@ -4,12 +4,17 @@ set -e
 echo "#!/bin/sh" >  /usr/local/bin/healthcheck
 chmod a+x /usr/local/bin/healthcheck
 
+if [ "${STOP_ON_BAD_HEALTH}" = "true" ]
+    then echo "badhealth='apachectl stop'" >> /usr/local/bin/healthcheck
+    then echo "badhealth='true'" >> /usr/local/bin/healthcheck
+fi
 
 if [ "${KNX_INTERFACE}" != "" ]; then
     echo "starting knxd"
     knxd -i $KNX_INTERFACE -e $KNX_PA $KNXD_PARAMETERS
     chmod a+w /tmp/eib
-    echo "if ! pidof knxd >/dev/null; then echo 'Error: knxd not running'; exit 1; fi" >> /usr/local/bin/healthcheck
+    echo "if ! pidof knxd >/dev/null; then echo 'Error: knxd not running'; \$badhealth; exit 1; fi" >> /usr/local/bin/healthcheck
+    echo "if [ ! -e /tmp/eib ]; then echo 'Error: knxd socked does not exist'; \$badhealth; exit 1; fi" >> /usr/local/bin/healthcheck
 fi
 
 CGI_URL_PATH=${CGI_URL_PATH:-/cgi-bin/}
@@ -36,11 +41,11 @@ fi
 
 rm /var/log/apache2/access.log
 if [ "${ACCESS_LOG}" = "true" ]
-  then ln -s /dev/stdout /var/log/apache2/access.log
-  else ln -s /dev/null /var/log/apache2/access.log
+    then ln -s /dev/stdout /var/log/apache2/access.log
+    else ln -s /dev/null /var/log/apache2/access.log
 fi
 
-echo "if ! curl -f -s http://localhost/ >/dev/null; then echo 'Error: apache not responding'; exit 1; fi" >> /usr/local/bin/healthcheck
+echo "if ! curl -f -s http://localhost/ >/dev/null; then echo 'Error: apache not responding'; \$badhealth; exit 1; fi" >> /usr/local/bin/healthcheck
 
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
