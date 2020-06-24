@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-HEALTH_CMD="curl -f -s http://localhost/ >/dev/null || (echo: 'Error: apache not responding'; exit 1)"
+HEALTH_CMD="curl -f -s http://localhost/ >/dev/null || (echo 'Error: apache not responding'; exit 1)"
 
 if [ "${KNX_INTERFACE}" != "" ]; then
     echo "starting knxd"
