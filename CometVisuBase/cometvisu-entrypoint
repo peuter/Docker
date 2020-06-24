@@ -30,7 +30,7 @@ if [ "${BACKEND_PROXY_SOURCE}" != "" ] && [ "${BACKEND_PROXY_TARGET}" != "" ]; t
 fi
 
 rm /var/log/apache2/access.log
-if [ "${ACCESS_LOG}" == "true" ]
+if [ "${ACCESS_LOG}" = "true" ]
   then ln -s /dev/stdout /var/log/apache2/access.log
   else ln -s /dev/null /var/log/apache2/access.log
 fi
