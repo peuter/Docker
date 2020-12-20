@@ -76,8 +76,8 @@ do
     docker push cometvisu/cometvisuabstractbase:$imageTag
   fi
 
-  docker cometvisu/cometvisuabstractbase:$baseArchDocker-$imageTag
-  docker cometvisu/cometvisuabstractbase:$baseArchDocker-knxd-0.0.5.1-$imageTag
+  docker push cometvisu/cometvisuabstractbase:$baseArchDocker-$imageTag
+  docker push cometvisu/cometvisuabstractbase:$baseArchDocker-knxd-0.0.5.1-$imageTag
 
 done
 
