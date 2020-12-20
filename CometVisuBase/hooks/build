@@ -72,11 +72,11 @@ do
 
 	if [[ "$baseArchDocker" == "amd64" ]]
 	then
-    docker tag cometvisu/cometvisuabstractbase:$baseArchDocker-$imageTag cometvisu/cometvisuabstractbase:$imageTag
-    docker push --all-tags cometvisu/cometvisuabstractbase:$imageTag
+    docker image tag cometvisu/cometvisuabstractbase:$baseArchDocker-$imageTag cometvisu/cometvisuabstractbase:$imageTag
+    docker image push --all-tags cometvisu/cometvisuabstractbase:$imageTag
   fi
 
-  docker push --all-tags cometvisu/cometvisuabstractbase:$baseArchDocker-$imageTag
+  docker image push --all-tags cometvisu/cometvisuabstractbase:$baseArchDocker-$imageTag
 
 done
 
